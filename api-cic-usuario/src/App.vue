@@ -10,17 +10,24 @@
     {title: 'Post 3', id: 3, body: 'descripcion 3', colorText: 'success'},
     {title: 'Post 4', id: 4, body: 'descripcion 4', colorText: 'primary'},
   ])
+
+  const favorito = ref("");
+  const cambiarFavorito = (title) => {
+    favorito.value = title;
+  }
 </script>
 
 <template>
   <div class="container">
     <h1>APP</h1>
+    <h2>Mi post favorito es: {{ favorito }}</h2>
     <ButtonCounter/>
     <BlogPost v-for="post in posts"
       :title="post.title"
       :id="post.id"
       :body = "post.body"
       :colorText="post.colorText"
+      @cambiarFavorito="cambiarFavorito"
     />
   </div>
   
