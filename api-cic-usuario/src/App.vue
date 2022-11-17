@@ -1,35 +1,32 @@
 <script setup>
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   const name = 'Vue dinamico';
 
   const counter = ref(0);
   const arrayColor = ["red", "green"];
 
-  const increment = () => {
-    console.log('aumentar contador');
-    counter.value ++;
-    console.log(counter);
-  }
+  const increment = () => counter.value ++;
   
-  const decrement = () => {
-    console.log('disminuir contador');
-    counter.value --;
-    console.log(counter);
-  }
+  const decrement = () => counter.value --
 
-  const reset = () => {
-    console.log('aumentar contador');
-    counter.value = 0;
-    console.log(counter);
-  }
+  const reset = () => counter.value = 0;
   
-  
+  const classCounter = computed (()=> {
+    if(counter.value == 0) {
+      return 'zero'
+    }
+    if(counter.value > 0) {
+      return 'positive'
+    }
+    if(counter.value < 0) {
+      return 'negative'
+    }
+  }) 
 </script>
 
 <template>
-  <h2 v-if="counter > 0" :style="`color:${arrayColor[1]}`">{{ counter }}</h2>
-  <h2 v-else :style="`color:${arrayColor[0]}`">{{ counter }}</h2>
-  
+  <h2 :class="classCounter">{{ counter }}</h2>
+
   <button @click="increment">Aumentar</button>
   <button @click="decrement">Disminuir</button>
   <button @click="reset">reset</button>
@@ -38,5 +35,14 @@
 <style>
   h1 {
     color: red;
+  }
+  .positive {
+    color: green;
+  }
+  .negative {
+    color:red;
+  }
+  .zero {
+    color: peru;
   }
 </style>
