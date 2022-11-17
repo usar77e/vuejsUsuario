@@ -5,6 +5,8 @@
   const counter = ref(0);
   const arrayColor = ["red", "green"];
 
+  const arrayFavoritos = ref([]);
+
   const increment = () => counter.value ++;
   
   const decrement = () => counter.value --
@@ -22,14 +24,41 @@
       return 'negative'
     }
   }) 
+
+  const classEstado = computed(() => {
+    const resultado = arrayFavoritos.value.find( num => num === counter.value);
+    //console.log("rres -> "  + resultado);
+    if(resultado === 0) return true;
+    return resultado ? true : false;
+  })
+
+  const add = () => {
+    arrayFavoritos.value.push(counter.value);
+    console.log(arrayFavoritos);
+  }
+
 </script>
 
 <template>
-  <h2 :class="classCounter">{{ counter }}</h2>
+  <div class="container">
+    <h2 :class="classCounter">{{ counter }}</h2>
+    <div class="btn-group">
+      <button @click="increment" class="btn btn-success">Aumentar</button>
+      <button @click="decrement" class="btn btn-danger">Disminuir</button>
+      <button @click="reset" class="btn btn-secondary">reset</button>
+      <button :disabled="classEstado" @click="add" class="btn btn-primary">agregar</button>
+    </div>
+    
+    <h1>Numeros seleccionados por el usuario</h1>
+    <ul class="list-group">
+      <li v-for="(fav, index) in arrayFavoritos"
+      :key="index" class="list-group-item">
+        {{ fav }}
+      </li>
+    </ul>
 
-  <button @click="increment">Aumentar</button>
-  <button @click="decrement">Disminuir</button>
-  <button @click="reset">reset</button>
+  </div>
+  
 </template>
 
 <style>
