@@ -5,6 +5,8 @@
         'id',
         'colorText',
     ])
+
+    const emit = defineEmits(['cambiarFavoritoNombre'])
 </script>
 <template>
     <div class="card">
@@ -13,7 +15,7 @@
             <h5 class="card-title">{{ id }} - {{ title }}</h5>
             <p>{{ body}}</p>
             <button 
-                @click="$emit('cambiarFavorito', title)" 
+                @click="emit('cambiarFavoritoNombre', title)" 
                 class="btn btn-outline-primary">
                 Favorito
             </button>

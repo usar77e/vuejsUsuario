@@ -27,7 +27,7 @@
       :id="post.id"
       :body = "post.body"
       :colorText="post.colorText"
-      @cambiarFavorito="cambiarFavorito"
+      @cambiarFavoritoNombre="cambiarFavorito"
     />
   </div>
   
