@@ -1,8 +1,9 @@
 <script setup >
-  import { ref } from 'vue';
+  import { ref, computed, onMounted } from 'vue';
   import  ButtonCounter  from './components/ButtonCounter.vue';
   import BlogPost from './components/BlogPost.vue';
   import PaginatePost from './components/PaginatePost.vue';
+  import LoadingSpinner from './components/LoadingSpinner.vue';
 
   const posts = ref([])
 
@@ -11,16 +12,31 @@
   const inicio = ref(0);
   const fin = ref(10);
 
+  const loading = ref(true);
+
   const cambiarFavorito = (title) => {
     favorito.value = title;
   }
 
-  fetch('https://jsonplaceholder.typicode.com/posts')
+  onMounted(async() => {
+    try {
+      const res = await fetch('https://jsonplaceholder.typicode.com/posts')  
+      posts.value = await res.json();
+    } catch(error){
+      console.log(error);
+    } finally {
+      loading.value = false;
+    }
+  });
+
+
+ /* fetch('https://jsonplaceholder.typicode.com/posts')
     .then((res) => res.json())
     .then((data) => {
       posts.value = data;
     })
-
+    .finally(() => loading.value = false)
+*/
     const next = () => {
       inicio.value = inicio.value + postXpagina;
       fin.value = fin.value + postXpagina;
@@ -32,14 +48,13 @@
 
 </script>
 
-<template class="container">
-  <div >
+<template>
+  <LoadingSpinner v-if="loading"/>
+  <div class="container" v-else>
     <h1>APP</h1>
     <h2>Mi post favorito es: {{ favorito }}</h2>
-    <PaginatePost class="mb-2"/>
-    <button @click="preview" :disabled="inicio === 0">PREVIEW P</button>
-    <button @click="next">NEXT P</button>
-    <ButtonCounter/>
+    <PaginatePost @next="next" @preview="preview" :inicio="inicio" :fin="fin" :maxLength="posts.length" class="mb-2"/>
+    <!--<ButtonCounter />-->
     <BlogPost class="mb-1" style="color:black" 
       v-for="post in posts.slice(inicio, fin)"
       :title="post.title"
