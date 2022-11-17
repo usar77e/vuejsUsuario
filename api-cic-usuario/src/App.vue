@@ -1,17 +1,38 @@
 <script setup>
+  import { ref } from 'vue'
   const name = 'Vue dinamico';
-  //metodo
-  const handlelclick = (message) => {
-    console.log(message);
+
+  const counter = ref(0);
+  const arrayColor = ["red", "green"];
+
+  const increment = () => {
+    console.log('aumentar contador');
+    counter.value ++;
+    console.log(counter);
   }
+  
+  const decrement = () => {
+    console.log('disminuir contador');
+    counter.value --;
+    console.log(counter);
+  }
+
+  const reset = () => {
+    console.log('aumentar contador');
+    counter.value = 0;
+    console.log(counter);
+  }
+  
+  
 </script>
 
 <template>
-  <h1>Holas {{ name.toUpperCase() }} </h1>
-  <br/>
-  <button v-on:click.left="handlelclick('texto left')">Activame left</button>
-  <button @click.middle="handlelclick('texto middle')">Activame middle</button>
-  <button @click.right.prevent="handlelclick('texto right')">Activame right</button>
+  <h2 v-if="counter > 0" :style="`color:${arrayColor[1]}`">{{ counter }}</h2>
+  <h2 v-else :style="`color:${arrayColor[0]}`">{{ counter }}</h2>
+  
+  <button @click="increment">Aumentar</button>
+  <button @click="decrement">Disminuir</button>
+  <button @click="reset">reset</button>
 </template>
 
 <style>
